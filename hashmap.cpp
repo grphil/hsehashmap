@@ -5,7 +5,8 @@
 template<typename KeyType, typename ValueType>
 class HashMapIterator {
 public:
-    HashMapIterator (std::vector<std::list<std::pair<const KeyType, ValueType>>> *objects = nullptr): hmap(objects) {
+    HashMapIterator (std::vector<std::list<std::pair<const KeyType, ValueType>>>* objects = nullptr): 
+        hmap(objects) {
         if (objects == nullptr) {
             return;
         }
@@ -18,12 +19,14 @@ public:
         }
     }
 
-    HashMapIterator(std::vector<std::list<std::pair<const KeyType, ValueType>>> *objects, size_t hsh_, typename std::list<std::pair<const KeyType, ValueType>>::iterator obj_it_):
+    HashMapIterator(std::vector<std::list<std::pair<const KeyType, ValueType>>>* objects, 
+                    size_t hsh_,
+                    typename std::list<std::pair<const KeyType, ValueType>>::iterator obj_it_):
         hmap(objects),
         hsh(hsh_),
         obj_it(obj_it_) {}
 
-    HashMapIterator(const HashMapIterator<KeyType, ValueType> & other_iter):
+    HashMapIterator(const HashMapIterator<KeyType, ValueType>& other_iter):
         hmap(other_iter.hmap),
         hsh(other_iter.hsh),
         obj_it(other_iter.obj_it) {}
@@ -46,27 +49,33 @@ public:
         return it;
     }
 
-    std::pair<const KeyType, ValueType> & operator *() {
+    std::pair<const KeyType, ValueType>& operator *() {
         return *obj_it;
     }
 
-    std::pair<const KeyType, ValueType> * operator ->() {
+    std::pair<const KeyType, ValueType>* operator ->() {
         return &(*obj_it);
     }
 
-    bool operator == (const HashMapIterator<KeyType, ValueType> &a) {
-        return obj_it == a.obj_it || (hmap == a.hmap && hsh == hmap->size() && a.hsh == hsh);
+    bool operator == (const HashMapIterator<KeyType, ValueType>& a) {
+        if (obj_it == a.obj_it) {
+            return true;
+        }
+        return hmap == a.hmap && hsh == hmap->size() && a.hsh == hsh;
     }
 
-    bool operator != (const HashMapIterator<KeyType, ValueType> &a) {
-        return !(obj_it == a.obj_it || (hmap == a.hmap && hsh == hmap->size() && a.hsh == hsh));
+    bool operator != (const HashMapIterator<KeyType, ValueType>& a) {
+        if (obj_it == a.obj_it) {
+            return false;
+        }
+        return hmap != a.hmap || hsh != hmap->size() || a.hsh != hsh;
     }
 
-    std::vector<std::list<std::pair<const KeyType, ValueType>>> * hmap_ptr() {
+    std::vector<std::list<std::pair<const KeyType, ValueType>>>* hmap_ptr() {
         return hmap;
     }
 
-    std::vector<std::list<std::pair<const KeyType, ValueType>>> * get_hmap() const {
+    std::vector<std::list<std::pair<const KeyType, ValueType>>>* get_hmap() const {
         return hmap;
     }
 
@@ -79,7 +88,7 @@ public:
     }
 
 private:
-    std::vector<std::list<std::pair<const KeyType, ValueType>>> *hmap;
+    std::vector<std::list<std::pair<const KeyType, ValueType>>>* hmap;
     size_t hsh;
     typename std::list<std::pair<const KeyType, ValueType>>::iterator obj_it;
 };
@@ -87,7 +96,8 @@ private:
 template<typename KeyType, typename ValueType>
 class HashMapConstIterator {
 public:
-    HashMapConstIterator (const std::vector<std::list<std::pair<const KeyType, ValueType>>> *objects = nullptr): hmap(objects) {
+    HashMapConstIterator (const std::vector<std::list<std::pair<const KeyType, ValueType>>>* objects = nullptr): 
+        hmap(objects) {
         if (objects == nullptr) {
             return;
         }
@@ -100,17 +110,19 @@ public:
         }
     }
 
-    HashMapConstIterator(const std::vector<std::list<std::pair<const KeyType, ValueType>>> *objects, size_t hsh_, typename std::list<std::pair<const KeyType, ValueType>>::const_iterator obj_it_):
+    HashMapConstIterator(const std::vector<std::list<std::pair<const KeyType, ValueType>>>* objects, 
+                         size_t hsh_, 
+                         typename std::list<std::pair<const KeyType, ValueType>>::const_iterator obj_it_):
         hmap(objects),
         hsh(hsh_),
         obj_it(obj_it_) {}
 
-    HashMapConstIterator(const HashMapIterator<KeyType, ValueType> & other_iter):
+    HashMapConstIterator(const HashMapIterator<KeyType, ValueType>& other_iter):
         hmap(other_iter.get_hmap()),
         hsh(other_iter.get_hsh()),
         obj_it(other_iter.GetObj_it()) {}
 
-    HashMapConstIterator(const HashMapConstIterator<KeyType, ValueType> & other_iter):
+    HashMapConstIterator(const HashMapConstIterator<KeyType, ValueType>& other_iter):
         hmap(other_iter.hmap),
         hsh(other_iter.hsh),
         obj_it(other_iter.obj_it) {}
@@ -133,24 +145,30 @@ public:
         return it;
     }
 
-    const std::pair<const KeyType, ValueType> & operator *() {
+    const std::pair<const KeyType, ValueType>& operator *() {
         return *obj_it;
     }
 
-    const std::pair<const KeyType, ValueType> * operator ->() {
+    const std::pair<const KeyType, ValueType>* operator ->() {
         return &(*obj_it);
     }
 
-    bool operator == (const HashMapConstIterator<KeyType, ValueType> &a) {
-        return obj_it == a.obj_it || (hmap == a.hmap && hsh == hmap->size() && a.hsh == hsh);
+    bool operator == (const HashMapConstIterator<KeyType, ValueType>& a) {
+        if (obj_it == a.obj_it) {
+            return true;
+        }
+        return hmap == a.hmap && hsh == hmap->size() && a.hsh == hsh;
     }
 
-    bool operator != (const HashMapConstIterator<KeyType, ValueType> &a) {
-        return !(obj_it == a.obj_it || (hmap == a.hmap && hsh == hmap->size() && a.hsh == hsh));
+    bool operator != (const HashMapConstIterator<KeyType, ValueType>& a) {
+        if (obj_it == a.obj_it) {
+            return false;
+        }
+        return hmap != a.hmap || hsh != hmap->size() || a.hsh != hsh;
     }
 
 private:
-    const std::vector<std::list<std::pair<const KeyType, ValueType>>> *hmap;
+    const std::vector<std::list<std::pair<const KeyType, ValueType>>>* hmap;
     size_t hsh;
     typename std::list<std::pair<const KeyType, ValueType>>::const_iterator obj_it;
 };
@@ -161,12 +179,12 @@ class HashMap {
 public:
     HashMap():
         hasher(),
-        objects(1), 
+        objects(MinSize), 
         sz(0) {}
 
-    HashMap(const Hash & hasher_):
+    HashMap(const Hash& hasher_):
         hasher(hasher_),
-        objects(1), 
+        objects(MinSize), 
         sz(0) {}
 
     typedef HashMapIterator<KeyType, ValueType> iterator;
@@ -174,41 +192,35 @@ public:
 
     template <typename Iter>
     HashMap(Iter first, Iter last): hasher(), sz(0) {
-        objects.resize(2);
+        objects.resize(MinSize);
         while (first != last) {
             AddObj(*first);
-            if (objects.size() > sz) {
-                Resize(sz * 2);
-            }
             first++;
         }
     }
 
     template <typename Iter>
-    HashMap(Iter first, Iter last, const Hash & hasher_): hasher(hasher_), sz(0) {
-        objects.resize(2);
+    HashMap(Iter first, Iter last, const Hash& hasher_): hasher(hasher_), sz(0) {
+        objects.resize(MinSize);
         while (first != last) {
             AddObj(*first);
-            if (objects.size() > sz) {
-                Resize(sz * 2);
-            }
             first++;
         }
     }
 
     HashMap(std::initializer_list<std::pair<KeyType, ValueType>> lst): HashMap(lst.begin(), lst.end()) {}
 
-    HashMap(std::initializer_list<std::pair<KeyType, ValueType>> lst, const Hash & hasher_): 
+    HashMap(std::initializer_list<std::pair<KeyType, ValueType>> lst, const Hash& hasher_): 
         HashMap(lst.begin(), lst.end(), hasher_) {}
 
-    HashMap(const HashMap<KeyType, ValueType, Hash> & other_map):
+    HashMap(const HashMap<KeyType, ValueType, Hash>& other_map):
         HashMap(other_map.begin(), other_map.end(), hasher) {}
 
-    const HashMap & operator = (const HashMap<KeyType, ValueType> & other) {
+    const HashMap& operator = (const HashMap<KeyType, ValueType>& other) {
         objects.clear();
         objects.resize(other.objects.size());
         for (size_t i = 0; i < other.objects.size(); i++) {
-            for (auto obj : other.objects[i]) {
+            for (const auto& obj : other.objects[i]) {
                 objects[i].push_back(obj);
             }
         }
@@ -229,28 +241,24 @@ public:
         return hasher;
     }
 
-    void insert(const std::pair<KeyType, ValueType> &pr) {
+    void insert(const std::pair<KeyType, ValueType>& pr) {
         size_t hsh = hasher(pr.first) % objects.size();
         auto it = GetObj(pr.first, hsh);
         if (it == objects[hsh].end()) {
-            if (objects.size() < sz) {
-                Resize(sz * 2);
-            }
-            sz++;
             objects[hsh].push_back(pr);
+            sz++;
+            ResizeIfNeeded();
         }
     }
 
-    void erase(const KeyType & key) {
-        if (EraseObj(key) && objects.size() > sz * 4) {
-            Resize(sz * 2);
-        }
+    void erase(const KeyType& key) {
+        EraseObj(key);
     }
 
     void clear() {
         sz = 0;
         objects.clear();
-        objects.resize(1);
+        objects.resize(MinSize);
     }
 
     iterator begin() {
@@ -287,21 +295,20 @@ public:
         return end();
     }
 
-    ValueType & operator[] (KeyType key) {
+    ValueType& operator[] (KeyType key) {
         size_t hsh = hasher(key) % objects.size();
         auto it = GetObj(key, hsh);
         if (it == objects[hsh].end()) {
-            if (objects.size() < sz) {
-                Resize(sz * 2);
-            }
+            objects[hsh].push_back(std::make_pair(key, ValueType()));
             sz++;
-            objects[hsh].push_back({key, ValueType()});
-            it = --objects[hsh].end();
+            ResizeIfNeeded();
+            hsh = hasher(key) % objects.size();
+            it = GetObj(key, hsh);
         }
         return it->second;
     }
 
-    const ValueType & at(KeyType key) const {
+    const ValueType& at(KeyType key) const {
         size_t hsh = hasher(key) % objects.size();
         auto it = GetObj(key, hsh);
         if (it == objects[hsh].end()) {
@@ -314,9 +321,12 @@ private:
     Hash hasher;
     std::vector<std::list<std::pair<const KeyType, ValueType>>> objects;
     size_t sz;
+    static constexpr size_t ResizeCoefficient = 2;
+    static constexpr size_t MaxSizeCoefficient = 4;
+    static constexpr size_t MinSize = 2;
 
     template<typename Iter = typename std::list<std::pair<const KeyType, ValueType>>::iterator>
-    Iter GetObj(const KeyType &key, size_t hsh) {
+    Iter GetObj(const KeyType& key, size_t hsh) {
         auto it = objects[hsh].begin();
         while (it != objects[hsh].end() && !(it->first == key)) {
             it++;
@@ -325,7 +335,7 @@ private:
     }
 
     template<typename Iter = typename std::list<std::pair<const KeyType, ValueType>>::const_iterator>
-    Iter GetObj(const KeyType &key, size_t hsh) const {
+    Iter GetObj(const KeyType& key, size_t hsh) const {
         auto it = objects[hsh].begin();
         while (it != objects[hsh].end() && !(it->first == key)) {
             it++;
@@ -333,7 +343,7 @@ private:
         return it;
     }
 
-    void AddObj(const std::pair<KeyType, ValueType> &pr) {
+    void AddObj(const std::pair<KeyType, ValueType>& pr) {
         size_t hsh = hasher(pr.first) % objects.size();
         auto it = GetObj(pr.first, hsh);
         if (it != objects[hsh].end()) {
@@ -341,29 +351,44 @@ private:
         } else {
             objects[hsh].push_back(pr);
             sz++;
+            ResizeIfNeeded();
         }
     }
 
-    bool EraseObj(const KeyType & key) {
+    void EraseObj(const KeyType& key) {
         size_t hsh = hasher(key) % objects.size();
         auto it = GetObj(key, hsh);
         if (it != objects[hsh].end()) {
             objects[hsh].erase(it);
             sz--;
-            return 1;
+            ResizeIfNeeded();
         }
-        return 0;
     }
 
     void Resize(size_t newsz) {
+        if (newsz < MinSize) {
+            newsz = MinSize;
+        }
         std::vector<std::list<std::pair<const KeyType, ValueType>>> old_objects(std::move(objects));
         objects.clear();
-        sz = 0;
         objects.resize(newsz);
         for (size_t i = 0; i < old_objects.size(); i++) {
-            for (auto object: old_objects[i]) {
-                AddObj(object);
+            for (const auto& object: old_objects[i]) {
+                size_t hsh = hasher(object.first) % objects.size();
+                objects[hsh].push_back(object);
             }
+        }
+    }
+
+    void ResizeIfNeeded() {
+        if (objects.size() < MinSize) {
+            return;
+        }
+        if (objects.size() < sz) {
+            Resize(sz * ResizeCoefficient);
+        }
+        if (objects.size() > sz * MaxSizeCoefficient) {
+            Resize(sz * ResizeCoefficient);
         }
     }
 };
